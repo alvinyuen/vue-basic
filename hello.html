@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+
+  <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+
+  <div id="app">
+    <h1>{{msg}}</h1>
+    <!--<a href="{{url}}">Home</a>-->
+    <a v-bind:href="url">Home</a>
+    <!--v-bind-->
+    <p>
+      <form>
+        Name: <input type="text" v-bind:value="name">
+      </form>
+    </p>
+
+    <!--binding to v-model-->
+    <p>
+      <form method="post" action="/">
+        <input type="email" v-model.lazy="email" id="email">
+      </form>
+      <p> You entered {{email}}. </p>
+    </p>
+
+    <!--control logic-->
+    <fieldset>
+      <div v-for="(interest, index) in interests">
+      <input type="checkbox" v-model="selectedInterests" :value="interest.id">{{index}}. {{interest.name}}</input>
+      </div>
+
+    </fieldset>
+    <p v-if="selectedInterests.length ==3"> You must be very active </p>
+    <p v-else-if="selectedInterests.length > 0"> You selected: {{selectedInterests.join(', ')}}</p>
+    <p v-else> Please select at least one interest.</p>
+    <div v-for="(value, key, index) in address">
+      {{index+1}}. {{key}}: {{value}}
+    </div>
+    <div v-for="i in 10">
+      {{i}}
+    </div>
+
+    <!--event handling-->
+    <div>
+      <button v-if="!loggedIn" v-on:click="logIn('Mike')">Login</button>
+      <button v-else @click.prevent="logOut">Log out</button>
+      {{btnmsg}}
+    </div>
+
+    <!--binding to style attribute-->
+    <div :style="{'border': 'solid 2px black', 'margin-buttom': '30px', fontSize: myFontSize +'px'}">
+      JS object literal bound to style attribute
+    </div>
+
+    <div :style="fancyDiv"
+      @mouseover="fancyDiv.backgroundColor = 'blue'"
+      @mouseout="fancyDiv.backgroundColor = 'lightgrey'">
+      object literal in data bound to style attribute
+    </div>
+
+    <input type="number" v-model="myFontSize">
+
+    <!--binding to class attribute-->
+    <div>
+      <div class="square" :class="{blue: cold, red: hot}"></div>
+      <div :class="cssClasses"></div>
+      <input type="text" v-model="bgColorClass">
+      <div :class="[squareClass, bgColorClass, {'dashed-border': selected}]"></div>
+    </div>
+
+  </div>
+
+  <style>
+    .square {
+      width: 200px;
+      height: 200px;
+      margin-bottom: 20px;
+    }
+    .blue {
+      background-color: blue;
+    }
+    .red {
+      background-color: red;
+    }
+    .dashed-border {
+      border: dashed 3px black;
+    }
+  </style>
+
+  <script>
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        msg: 'Hello from Vue!',
+        url: 'https://www.google.com',
+        name: 'Alvin',
+        email: '',
+        interests: [
+          {
+            id: 1,
+            name: 'Running',
+          },
+          {
+            id: 2,
+            name: 'Swimming',
+          },
+          {
+            id: 3,
+            name: 'Cycling',
+          }
+        ],
+        selectedInterests: [],
+        address: {
+          street: '888 Metta St',
+          City: 'CA'
+        },
+        btnmsg: '',
+        loggedIn: false,
+        myFontSize: 24,
+        fancyDiv: {
+          backgroundColor: 'lightgrey',
+          borderRadius: '10px',
+          padding: '10px',
+          marginTop: '30px'
+        },
+        cold: true,
+        hot: false,
+        cssClasses: {
+          square: true,
+          'dashed-border': true,
+          blue: false,
+        },
+        squareClass: 'square',
+        bgColorClass: 'red',
+        selected: true
+      },
+      methods: {
+        logIn: function(username) {
+          this.loggedIn = true;
+          this.btnmsg = `Welcome! ${username}`
+        },
+        logOut: function() {
+          this.loggedIn = false;
+          this.btnmsg = 'Good Bye!'
+        }
+      }
+
+
+    });
+  </script>
+
+
+</html>
