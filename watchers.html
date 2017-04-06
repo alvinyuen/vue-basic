@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+  <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+
+
+<div id="app">
+  Got a question?
+  <input type="text" v-model="question"/>
+  {{response}}
+  <ul>
+    <li v-for="product in products">
+      {{product.name}}
+    </li>
+  </ul>
+</div>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      question: '',
+      response: '',
+      products: [],
+    },
+    watch: {
+      question: function(newValue) {
+        if(newValue.indexOf('products') > -1) {
+          this.response = 'Sure, I can list the products for you';
+          $.getJSON('https://hplussport.com/api/products')
+            .done(function(data) {
+              vm.products = data;
+            });
+        }
+        else {
+          this.response = 'Sorry, I don\'t understand that question';
+          this.products = [];
+        }
+      }
+    }
+  });
+
+
+
+
+</script>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+  <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+
+
+<div id="app">
+  <p>
+    {{firstName}} {{lastName}}
+  </p>
+  <div v-for="fw in frameworks">
+    {{fw}}
+  </div>
+  <p> {{browser.name}} {{browser.version}} </p>
+
+  </div>
+</div>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      firstName: 'Alvin',
+      lastName: '',
+      frameworks: ['Ember', 'Angular', 'React'],
+      browser: {
+        name: 'Google Chrome'
+      }
+    }
+  });
+
+  vm.lastName = 'Yuen';
+
+
+</script>
+
+</html>
+
+<!--Arrays-->
+<!--1. vm.push(*dataproperty, *value)-->
+
+<!--Objects-->
+<!--1. Vue.set(*object, *property, *value)-->
+<!--2. Vue.delete(*array, *index)-->
+

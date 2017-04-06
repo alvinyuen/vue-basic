@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+  <script type="text/javascript" src="node_modules/vue/dist/vue.js"></script>
+
+
+<div id="app">
+  <p>
+    {{firstName}} {{lastName}}
+  </p>
+  <div>
+    <input type="text" v-model.number.lazy="tempFahrenheit"/>
+    Temperature in Celsius: {{tempCelsius}}
+  </div>
+</div>
+
+<script>
+  var vm = new Vue({
+    el: '#app',
+    data: {
+      firstName: 'Alvin',
+      lastName: 'Yuen',
+      tempFahrenheit: 0
+    },
+    computed: {
+      tempCelsius: function() {
+        return Math.round(5/9 * (this.tempFahrenheit - 32))
+      }
+    },
+    methods: {
+      tempCelsiusMethod: function() {
+        return Math.round(5/9 * (this.tempFahrenheit - 32))
+      }
+    }
+  });
+
+
+
+</script>
+
+</html>
