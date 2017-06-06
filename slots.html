@@ -8,15 +8,20 @@
 
 
 <div id="app">
-  <!--<product-list :products="theProducts" title="Product list"></product-list>-->
-  <button v-if="listType == 'product-list'" @click="listType = 'product-list-simple'">Show less detail</button>
-  <button v-else @click="listType = 'product-list'">Show more detail</button>
-  <component :is="listType" :products="theProducts" title="Product list"></component>
-
   <!--managing with slots-->
-  <product-list-slot the-title="slot test" :products="theProducts">
-    <p>Where will this element appear?</p>
-  </product-list-slot>
+  <product-list title="Shop our award-winning product line" :products="theProducts">
+    <!--element will appear in this slot-->
+    <p slot="top">Where will this element apear?</p>
+    <em slot="bottom">Limited availability</em>
+  </product-list>
+
+  <product-list-flexible :products="theProducts" the-title="Custom layout">
+    <template scope="props">
+      <strong>{{props.product.name}}</strong> - {{props.product.description}}
+    </template>
+  </product-list-flexible>
+
+
 </div>
 
 <script>
@@ -35,9 +40,24 @@
   Vue.component('product-list', {
     template: '<div class="product-list">\
                 <h2>{{title}}</h2>\
+                <slot name="top"></slot>\
                 <ul>\
                   <product-list-item v-for="product in products" :product="product">\
                   </product-list-item>\
+                   <slot name="bottom"></slot>\
+                </ul>\
+              </div>',
+    props: ['title', 'products']
+  });
+
+   Vue.component('product-list-flexible', {
+    template: '<div class="product-list">\
+                <h2>{{title}}</h2>\
+                <slot name="top"></slot>\
+                <ul>\
+                  <li v-for="product in products">\
+                    <slot :product="product"></slot>\
+                  </li>\
                 </ul>\
               </div>',
     props: ['title', 'products']

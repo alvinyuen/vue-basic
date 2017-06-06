@@ -8,40 +8,34 @@
 
 
 <div id="app">
-  <!--<product-list :products="theProducts" title="Product list"></product-list>-->
-  <button v-if="listType == 'product-list'" @click="listType = 'product-list-simple'">Show less detail</button>
-  <button v-else @click="listType = 'product-list'">Show more detail</button>
-  <component :is="listType" :products="theProducts" title="Product list"></component>
-
   <!--managing with slots-->
-  <product-list-slot the-title="slot test" :products="theProducts">
-    <p>Where will this element appear?</p>
-  </product-list-slot>
+  <product-list title="Shop our award-winning product line" :products="theProducts">
+
+  </product-list>
+
+
+
 </div>
 
 <script>
   //components
-  Vue.component('product-list-simple', {
-    template: '<div class="product-list">\
-                <h2>{{title}}</h2>\
-                <ul>\
-                  <li v-for="product in products">\
-                    <img :src="product.image" class="small"> {{product.name}}</img>\
-                </ul>\
-              </div>',
-    props: ['title', 'products']
-  });
 
   Vue.component('product-list', {
     template: '<div class="product-list">\
                 <h2>{{title}}</h2>\
                 <ul>\
-                  <product-list-item v-for="product in products" :product="product">\
+                  <product-list-item @remove="remove(i)" v-for="(product, i) in products" :product="product">\
                   </product-list-item>\
                 </ul>\
               </div>',
-    props: ['title', 'products']
+    props: ['title', 'products'],
+    methods: {
+      remove: function(i) {
+        this.products.splice(i,1);
+      }
+    }
   });
+
 
   //encap separate item
   Vue.component('product-list-item', {
@@ -49,9 +43,14 @@
               '<li>\
                     <img :src="product.image">\
                     <p><strong>{{product.name}}</strong></p>\
-                    <p>{{product.description}}</p>\
+                    <p>{{product.description}} <a @click="requestRemoval">Hide this item</a></p>\
                </li>',
-    props: ['product']
+    props: ['product'],
+    methods: {
+      requestRemoval: function() {
+        this.$emit('remove');
+      }
+    }
   });
 
   //component
